@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,7 +9,6 @@ public class Movement : MonoBehaviour
     public float life = 180f;
 
     public float speed = 6.0f;
-    public float turnSpeed = 25.0f;
     private float horizontalInput;
     private float verticalInput;
 
@@ -27,7 +27,7 @@ public class Movement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        this.GetComponent<Rigidbody>().centerOfMass = Vector3.down * 0.2f;
     }
 
     // Update is called once per frame
@@ -35,8 +35,8 @@ public class Movement : MonoBehaviour
     {
         verticalInput = Input.GetAxis("Vertical");
         horizontalInput = Input.GetAxis("Horizontal");
-        transform.Translate(Vector3.forward * Time.deltaTime * speed * verticalInput);
-        transform.Rotate(Vector3.up, Time.deltaTime * turnSpeed * horizontalInput);
+        transform.Translate(-Vector3.forward * Time.deltaTime * speed * verticalInput);
+        transform.Translate(Vector3.left * Time.deltaTime * speed * horizontalInput);
         if (life <= 0)
         {
             this.transform.position = Vector3.MoveTowards(this.transform.position, tra.position, 1000);
@@ -48,7 +48,6 @@ public class Movement : MonoBehaviour
         
         if (GetBuff == true && BuffTime <0)
         {   speed /= 1.2f;
-            turnSpeed /= 1.2f;
             Bullet.GetComponent<Shoot>().speed /= 1.2f;
             GetBuff = false ;
             // BuffTime = 8f;
@@ -68,14 +67,13 @@ public class Movement : MonoBehaviour
            if (BuffTime > 0)
             {
                 speed *= 1.2f;
-                turnSpeed *= 1.2f;
                 Bullet.GetComponent<Shoot>().speed *= 1.2f;
                 GetBuff = true;
             }
            
         }
-       
         
-
     }
+
+
 }
