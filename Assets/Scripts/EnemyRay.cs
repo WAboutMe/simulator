@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.UI;
 using UnityEngine;
 
 public class EnemyRay : MonoBehaviour
@@ -19,8 +20,8 @@ public class EnemyRay : MonoBehaviour
 
     private void Awake()
     {
-        player = GameObject.FindWithTag("Player").transform;
-       
+       // player = GameObject.FindWithTag("Player").transform;
+        player=GameObject.Find("底盘").transform;
     }
 
 
@@ -35,7 +36,7 @@ public class EnemyRay : MonoBehaviour
                 return;
             else
             {
-                Vector3 dir = player.position - transform.position;
+                Vector3 dir = player.position - tr.position;
                 RotateTo(dir);
                 if (timer > fireInterval)
                     if (Checkforward(obstacleRange))
@@ -53,7 +54,6 @@ public class EnemyRay : MonoBehaviour
         //Vector3 dir = player.position - transform.position;
         Quaternion target = Quaternion.LookRotation(dir);
         transform.rotation = Quaternion.Lerp(transform.rotation,target,Time.deltaTime*turnSpeed);
-    
     }
 
 
@@ -64,7 +64,7 @@ public class EnemyRay : MonoBehaviour
             if (hit.collider.transform.root.tag == "Player")
                 return true;
         }
-      // else if (GameObject.Find("Sentry").GetComponent<AutoMove>().life == 0)
+      // else if (GameObject.Find("Sentry").GetComponent<AutoMove>().life <= 0)
        //    return false;
         return false;
     

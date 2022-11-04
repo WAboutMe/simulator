@@ -13,6 +13,7 @@ public class CursorControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Cursor.visible = false;
         if (Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.LeftAlt))
             Cursor.visible = true;
     }

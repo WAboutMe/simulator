@@ -1,19 +1,23 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.Mime;
+using System.Numerics;
+using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.UI;
+using Vector3 = UnityEngine.Vector3;
 
 
 public class Movement : MonoBehaviour
 {
     public float life = 180f;
 
-    public float speed = 6.0f;
-    private float horizontalInput;
-    private float verticalInput;
+    public Transform tra; //结束重置
 
-    public Transform tra;
-
+    private GameObject EndingCanvas; //结束
+    public GameObject EndingBUtton;
+    
     //Buff设置
     public GameObject BuffPre;
     public  bool BUFexist = true;
@@ -27,27 +31,28 @@ public class Movement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        this.GetComponent<Rigidbody>().centerOfMass = Vector3.down * 0.2f;
+        EndingCanvas = GameObject.Find("EndingText");
+        EndingBUtton = GameObject.Find("Reset");
+        EndingCanvas.SetActive(false);
+        EndingBUtton.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
-        verticalInput = Input.GetAxis("Vertical");
-        horizontalInput = Input.GetAxis("Horizontal");
-        transform.Translate(-Vector3.forward * Time.deltaTime * speed * verticalInput);
-        transform.Translate(Vector3.left * Time.deltaTime * speed * horizontalInput);
         if (life <= 0)
         {
             this.transform.position = Vector3.MoveTowards(this.transform.position, tra.position, 1000);
-            Debug.Log("YOU Lose!");
+           // Debug.Log("YOU Lose!");
+           EndingCanvas.SetActive(true);
+           EndingBUtton.SetActive(true);
         }
 
         if (BUFexist == false)
             BuffTime -= Time.deltaTime;
         
         if (GetBuff == true && BuffTime <0)
-        {   speed /= 1.2f;
+        {   GameObject.Find("底盘").GetComponent<Followed>().speed /= 1.2f;
             Bullet.GetComponent<Shoot>().speed /= 1.2f;
             GetBuff = false ;
             // BuffTime = 8f;
@@ -66,7 +71,7 @@ public class Movement : MonoBehaviour
             //增益效果
            if (BuffTime > 0)
             {
-                speed *= 1.2f;
+                GameObject.Find("底盘").GetComponent<Followed>().speed *= 1.2f;
                 Bullet.GetComponent<Shoot>().speed *= 1.2f;
                 GetBuff = true;
             }
@@ -74,6 +79,5 @@ public class Movement : MonoBehaviour
         }
         
     }
-
 
 }

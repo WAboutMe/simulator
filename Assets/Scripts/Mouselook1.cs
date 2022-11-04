@@ -22,6 +22,6 @@ public class Mouselook1 : MonoBehaviour
        _rotationX += Input.GetAxis("Mouse Y") * sensitivityVert;
        _rotationX = Mathf.Clamp(_rotationX, minVert, maxVert);
        
-        transform.localEulerAngles = new Vector3(_rotationX, 0, 0);
+       transform.localEulerAngles = new Vector3(_rotationX, 0, 0);
     }
 }
